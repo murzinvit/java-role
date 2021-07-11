@@ -1,38 +1,47 @@
-Role Name
-=========
+# Домашнее задание к занятию "08.03 Работа с Roles"
 
-A brief description of the role goes here.
+## Подготовка к выполнению
+1. Создайте два пустых публичных репозитория в любом своём проекте: elastic-role и kibana-role.
+2. Скачайте [role](./roles/) из репозитория с домашним заданием и перенесите его в свой репозиторий elastic-role.
+3. Скачайте дистрибутив [java](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html) и положите его в директорию `playbook/files/`. 
+4. Установите molecule: `pip3 install molecule`
+5. Добавьте публичную часть своего ключа к своему профилю в github.
 
-Requirements
-------------
+## Основная часть
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+Наша основная цель - разбить наш playbook на отдельные roles. Задача: сделать roles для elastic, kibana и написать playbook для использования этих ролей. Ожидаемый результат: существуют два ваших репозитория с roles и один репозиторий с playbook.
 
-Role Variables
---------------
+1. Создать в старой версии playbook файл `requirements.yml` и заполнить его следующим содержимым:
+   ```yaml
+   ---
+     - src: git@github.com:netology-code/mnt-homeworks-ansible.git
+       scm: git
+       version: "1.0.1"
+       name: java 
+   ```
+2. При помощи `ansible-galaxy` скачать себе эту роль. Запустите  `molecule test`, посмотрите на вывод команды.
+3. Перейдите в каталог с ролью elastic-role и создайте сценарий тестирования по умолчаню при помощи `molecule init scenario --driver-name docker`.
+4. Добавьте несколько разных дистрибутивов (centos:8, ubuntu:latest) для инстансов и протестируйте роль, исправьте найденные ошибки, если они есть.
+5. Создайте новый каталог с ролью при помощи `molecule init role --driver-name docker kibana-role`. Можете использовать другой драйвер, который более удобен вам.
+6. На основе tasks из старого playbook заполните новую role. Разнесите переменные между `vars` и `default`. Проведите тестирование на разных дистрибитивах (centos:7, centos:8, ubuntu).
+7. Выложите все roles в репозитории. Проставьте тэги, используя семантическую нумерацию.
+8. Добавьте roles в `requirements.yml` в playbook.
+9. Переработайте playbook на использование roles.
+10. Выложите playbook в репозиторий.
+11. В ответ приведите ссылки на оба репозитория с roles и одну ссылку на репозиторий с playbook.
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+## Необязательная часть
 
-Dependencies
-------------
+1. Проделайте схожие манипуляции для создания роли logstash.
+2. Создайте дополнительный набор tasks, который позволяет обновлять стек ELK.
+3. В ролях добавьте тестирование в раздел `verify.yml`. Данный раздел должен проверять, что elastic запущен и возвращает успешный статус по API, web-интерфейс kibana отвечает без кодов ошибки, logstash через команду `logstash -e 'input { stdin { } } output { stdout {} }'`.
+4. Убедитесь в работоспособности своего стека. Возможно, потребуется тестировать все роли одновременно.
+5. Выложите свои roles в репозитории. В ответ приведите ссылки.
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+---
 
-Example Playbook
-----------------
+### Как оформить ДЗ?
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Выполненное домашнее задание пришлите ссылкой на .md-файл в вашем репозитории.
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+---
