@@ -1,7 +1,7 @@
 ---
   - name: Upload tar.gz Java from local folder
     copy:
-      src: "jdk-{{ java_version }}_linux-x86_64_bin.tar.gz"
+      src: "files/jdk-{{ java_version }}_linux-x86_64_bin.tar.gz"
       dest: "/tmp/jdk-{{ java_version }}_linux-x86_64_bin.tar.gz"
       mode: 0755
       timeout: 60
